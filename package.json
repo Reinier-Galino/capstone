@@ -7,7 +7,9 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "backup-to-excel": "node backup-to-excel.js"
+    "backup-to-excel": "node backup-to-excel.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
@@ -72,6 +74,7 @@
     "@types/node": "^25.6.0",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "4.7.0",
+    "gh-pages": "^6.3.0",
     "tailwindcss": "4.1.12",
     "vite": "^6.4.2"
   },
