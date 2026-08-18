@@ -12,7 +12,10 @@ import { MaterialConsumptionPage } from "./pages/MaterialConsumptionPage";
 import { BOMPage } from "./pages/BOMPage";
 import { StaffPage } from './pages/StaffPage';
 
-// Restored "old system" routes.
+const basename = import.meta.env.BASE_URL && import.meta.env.BASE_URL !== '/'
+  ? import.meta.env.BASE_URL.replace(/\/$/, '')
+  : '/';
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -25,17 +28,14 @@ export const router = createBrowserRouter([
       { path: "operations", Component: OperationsPage },
       { path: "workforce", Component: WorkforcePage },
       { path: "analytics", Component: AnalyticsPage },
-        { path: "inventory", Component: InventoryPage },
-        { path: "forecast", Component: ForecastPage },
-        { path: "operations", Component: OperationsPage },
-        { path: "workforce", Component: WorkforcePage },
-        { path: "analytics", Component: AnalyticsPage },
-        { path: "public", Component: PublicPage },
-        { path: "staff", Component: StaffPage },
-        { path: "consume", Component: MaterialConsumptionPage },
-        { path: "bom", Component: BOMPage },
+      { path: "public", Component: PublicPage },
+      { path: "staff", Component: StaffPage },
+      { path: "consume", Component: MaterialConsumptionPage },
+      { path: "bom", Component: BOMPage },
     ],
   },
-]);
+], {
+  basename,
+});
 
 

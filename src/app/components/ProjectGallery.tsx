@@ -19,7 +19,7 @@ const defaultProjects: Project[] = [
     title: "Understated Elegance",
     category: "Kitchen Design",
     description: "A modern kitchen that balances warmth with precision, featuring custom millwork and thoughtful material selection.",
-    image: "/images/p1.svg",
+    image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
     curatorNote: "The restraint here speaks volumes—every detail considered, nothing superfluous."
   },
   {
@@ -27,7 +27,7 @@ const defaultProjects: Project[] = [
     title: "Layered Light",
     category: "Kitchen Design",
     description: "Where natural light meets carefully curated fixtures, creating an environment of calm sophistication.",
-    image: "/images/p2.svg",
+    image: "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80",
     curatorNote: "Notice how shadow becomes as important as light in defining the space."
   },
   {
@@ -35,7 +35,7 @@ const defaultProjects: Project[] = [
     title: "Material Dialogue",
     category: "Kitchen Design",
     description: "A contemporary space where wood, stone, and metal converse through texture and tone.",
-    image: "/images/p3.svg",
+    image: "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&q=80",
     curatorNote: "The interplay of materials here creates a visual rhythm that's both dynamic and harmonious."
   }
 ];
@@ -46,18 +46,21 @@ export function ProjectGallery() {
     try {
       const stored = JSON.parse(localStorage.getItem('projects') || 'null');
       if (stored && Array.isArray(stored) && stored.length > 0) {
-        // ensure stored projects have images (map missing to local samples)
-        const imageMap: Record<string, string> = { 'P-1001': '/images/p1.svg', 'P-1002': '/images/p2.svg', 'P-1003': '/images/p3.svg' };
+        const imageMap: Record<string, string> = {
+          '1': 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80',
+          '2': 'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80',
+          '3': 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&q=80',
+        };
         const patched = stored.map((p: any) => {
           const copy = { ...p };
-          const needs = !copy.image || String(copy.image).includes('placeholder');
+          const needs = !copy.image || String(copy.image).includes('placeholder') || !String(copy.image).startsWith('http');
           if (needs) {
             const idKey = String(copy.id);
             if (imageMap[idKey]) copy.image = imageMap[idKey];
-            else if (copy.title && /kitchen/i.test(copy.title)) copy.image = '/images/p1.svg';
-            else if (copy.title && /bathroom|bath/i.test(copy.title)) copy.image = '/images/p2.svg';
-            else if (copy.title && /wardrobe|closet/i.test(copy.title)) copy.image = '/images/p3.svg';
-            else copy.image = '/images/placeholder.svg';
+            else if (copy.title && /kitchen/i.test(copy.title)) copy.image = 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80';
+            else if (copy.title && /bathroom|bath/i.test(copy.title)) copy.image = 'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80';
+            else if (copy.title && /wardrobe|closet/i.test(copy.title)) copy.image = 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&q=80';
+            else copy.image = 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80';
           }
           return copy;
         });
@@ -71,7 +74,7 @@ export function ProjectGallery() {
 
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [inventoryCache, setInventoryCache] = useState<any[]>([]);
-  const placeholderImage = '/images/placeholder.svg';
+  const placeholderImage = 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80';
 
   useEffect(() => {
     const existing = JSON.parse(localStorage.getItem('projects') || 'null');

@@ -3,8 +3,11 @@ import { Link, useNavigate } from "react-router";
 import { Header } from "../components/Header";
 import { getStoredUsers, hashPassword, setCurrentUser } from "../utils/auth";
 
-const ADMIN_USERNAME = "admin";
-const ADMIN_PASSWORD = "Admin@2026!Mofil";
+const DEFAULT_USERS = [
+  { username: "admin", password: "Admin@2026!Mofil", role: "admin", path: "/analytics" },
+  { username: "supervisor", password: "super123", role: "supervisor", path: "/operations" },
+  { username: "staff", password: "staff123", role: "staff", path: "/inventory" },
+] as const;
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -18,9 +21,14 @@ export function LoginPage() {
     e.preventDefault();
     setError("");
 
-    if (formData.identifier === ADMIN_USERNAME && formData.password === ADMIN_PASSWORD) {
-      setCurrentUser({ username: ADMIN_USERNAME, role: 'admin' });
-      navigate('/analytics');
+    const match = DEFAULT_USERS.find((user) =>
+      (user.username === formData.identifier || user.username === formData.identifier.toLowerCase()) &&
+      user.password === formData.password
+    );
+
+    if (match) {
+      setCurrentUser({ username: match.username, role: match.role });
+      navigate(match.path);
       return;
     }
 
